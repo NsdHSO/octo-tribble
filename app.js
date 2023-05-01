@@ -195,9 +195,8 @@ Vue.createApp({
       this.addNewEvent("Monster", "Surrender", 100);
       this.showLogging = true;
       this.playerHealth = 0;
-      this.winner ='Monster'
-      this.rounds = 0
-
+      this.winner = "Monster";
+      this.rounds = 0;
     },
     addedHeal(index) {
       if (this.rounds > 0) {
@@ -241,3 +240,5 @@ Vue.createApp({
     },
   },
 }).mount(".continer-game");
+
+Vue.createApp({}).mount(".vue-behaind");
