@@ -23,6 +23,19 @@
         :style="{borderColor: boxASelected ? 'red': 'blue'}" class="p-2 m-2 border">
           dasdsa
         </span>
+        <div>
+          <input v-model="dataInput" />
+          <button class="button__icon  m-0" @click="toggleState()">Toggle Style</button>
+        </div>
+        <div :class = "dataInputs">
+          Style me
+          <p :class="{'d-none': hiddenP}">
+            <input v-model="styleP" />
+
+            <p :style="{backgroundColor:styleP}">{{styleP}}</p>
+          </p>
+        </div>
+        {{this.dataInput}}
       </div>
 
 

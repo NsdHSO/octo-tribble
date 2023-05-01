@@ -70,8 +70,23 @@ Vue.createApp({
   data(){
     return {
       boxASelected: false,
-      boxBSelected: false
+      boxBSelected: false,
+      dataInput: '',
+      hiddenP:false,
+      styleP: ''
     }
+  },
+  computed:{
+      dataInputs(){
+        console.log(
+          this.dataInput
+        );
+        if(this.dataInput === 'user1')
+          return 'bg-danger'
+        else{
+          return 'bg-warning'
+        }
+      }
   },
   methods: {
     boxSelected (event){
@@ -80,6 +95,9 @@ Vue.createApp({
         else if( event === 'B'){
           this.boxBSelected = !this.boxBSelected;
         }
+    },
+    toggleState(){
+      this.hiddenP = !this.hiddenP
     }
   }
 
