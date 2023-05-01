@@ -102,3 +102,20 @@ Vue.createApp({
   }
 
 }).mount('.screen_content')
+
+Vue.createApp({
+  data(){
+    return {
+      goals: [],
+      goal:''
+    }
+  },
+  methods: {
+    addNewGoal(){
+      if(this.goal !== ''){
+        this.goals.push(this.goal);
+        this.goal = ''
+      }
+    }
+  },
+}).mount('.screen')
