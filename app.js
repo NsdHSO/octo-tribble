@@ -236,7 +236,7 @@ Vue.createApp({
 
         setTimeout(() => {
           this.newGame();
-        }, 20000);
+        }, 2000);
       }
     },
   },
