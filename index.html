@@ -33,45 +33,66 @@
         </div>
       </div>
     </div> -->
-    <div class="continer-game">
-      <div class="alert alert-success" role="alert">
-        Monster Slayer
+    <div class="continer-game d-flex align-items-center flex-column">
+      <div v-if="winner !== ''">
+        <div class="alert alert-success" role="alert">
+          <h1>Winner is {{winner}}</h1>
+        </div>
       </div>
-      <div class="card" style="width: 18rem;">
-        <div class="card-body">
-          <h5 class="card-title">Monster Health</h5>
-          <div class="progress card-text" role="progressbar" aria-label="Basic example" aria-valuenow="25"
-            aria-valuemin="0" aria-valuemax="100">
-            <div class="progress-bar" :style="{width: monsterHealth+'%'}"></div>
+      <div v-else>
+
+        <div class="card" style="width: 18rem;">
+          <div class="alert alert-success" role="alert">
+            Monster Slayer
           </div>
-        </div>
-        <div class="card-body">
-          <h5 class="card-title">Your Health</h5>
-          <div class="progress card-text" role="progressbar" aria-label="Basic example" aria-valuenow="25"
-            aria-valuemin="0" aria-valuemax="100">
-            <div class="progress-bar" :style="{width: playerHealth+'%'}"></div>
+          <div class="card-body d-flex justify-content-center">
+            <h3 class="card-title">Round {{rounds}}</h5>
+
           </div>
-        </div>
-        <div>
-          <div @click="addedHeal(index)" v-for="(item, index) in life" :key="item"
-            :class="['btn', {'btn-danger' : item.check, 'btn-warning' : !item.check}]">
-            {{item.label}}
+          <div class="card-body">
+            <h5 class="card-title">Monster Health</h5>
+            <div class="progress card-text" role="progressbar" aria-label="Basic example" aria-valuenow="25"
+              aria-valuemin="0" aria-valuemax="100">
+              <div class="progress-bar" :style="{width: monsterHealth+'%'}"></div>
+            </div>
           </div>
-        </div>
-        <div class="action d-flex flex-wrap gap-2 p-2">
-          <div>
-            <button class="btn btn-success" @click="playerAttack()">Attack</button>
-          </div>
-          <div>
-            <button class="btn btn-success" @click="specialAttack()">Special Attack</button>
+          <div class="card-body">
+            <h5 class="card-title">Your Health</h5>
+            <div class="progress card-text" role="progressbar" aria-label="Basic example" aria-valuenow="25"
+              aria-valuemin="0" aria-valuemax="100">
+              <div class="progress-bar" :style="{width: playerHealth+'%'}"></div>
+            </div>
           </div>
           <div>
-            <button class="btn btn-success">Heal</button>
+            <div @click="addedHeal(index)" v-for="(item, index) in life" :key="item"
+              :class="['btn', {'btn-danger' : item.check, 'btn-warning' : !item.check}]">
+              {{item.label}}
+            </div>
           </div>
-          <div>
-            <button class="btn btn-success">Surrender</button>
+          <div class="action d-flex flex-wrap gap-2 p-2">
+            <div>
+              <button class="btn btn-success" @click="playerAttack()">Attack</button>
+            </div>
+            <div>
+              <button class="btn btn-success" @click="specialAttack()">Special Attack</button>
+            </div>
+            <div>
+              <button class="btn btn-success">Surrender</button>
+            </div>
+            <div>
+              <button @click='showLoggings()' class="btn btn-success">Show Logging</button>
+            </div>
           </div>
+
         </div>
+      </div>
+      <div v-if="showLogging">
+        <ul class="card">
+          <li v-for="(item, index) in log" :key="index">{{item}}</li>
+        </ul>
+      </div>
+      <div v-else>
+        <h6>Logging</h6>
       </div>
     </div>
   </div>

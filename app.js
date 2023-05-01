@@ -120,48 +120,115 @@ Vue.createApp({
     return {
       playerHealth: 100,
       monsterHealth: 100,
+      showLogging: false,
       life: [
         { check: true, label: "Life" },
         { check: true, label: "Life" },
         { check: true, label: "Life" },
       ],
+      rounds: 4,
+      winner: "",
+      log: [],
     };
   },
   methods: {
+    showLoggings() {
+      console.log("ion");
+      this.showLogging = !this.showLogging;
+    },
     randomNumber(min, max) {
       return Math.floor(Math.random() * (max - min)) + min;
     },
     attackMonster(min, max) {
-      this.monsterHealth -= this.randomNumber(min, max);
+      let value = this.randomNumber(min, max);
+      this.monsterHealth -= value;
+      this.addNewEvent("Monster", "attackMonster", value);
+      this.rounds--;
     },
     playerAttack() {
-      this.playerHealth -= this.randomNumber(
-        this.randomNumber(5, 5),
-        this.randomNumber(5, 18)
-      );
-      this.attackMonster(5, 12);
+      if (this.rounds > 0) {
+        let value = this.randomNumber(
+          this.randomNumber(5, 5),
+          this.randomNumber(5, 18)
+        );
+        this.playerHealth -= value;
+        this.addNewEvent("Player", "playerAttack", value);
+        this.rounds--;
+      }
     },
     specialAttack() {
-      this.playerHealth -= this.randomNumber(
-        this.randomNumber(5, 5),
-        this.randomNumber(15, 28)
-      );
-      this.attackMonster(
-        this.randomNumber(this.randomNumber(5, 5), this.randomNumber(7, 8)),
-        this.randomNumber(this.randomNumber(15, 15), this.randomNumber(25, 38))
+      if (this.rounds > 0) {
+        let valuePlayer = this.randomNumber(
+          this.randomNumber(5, 5),
+          this.randomNumber(15, 28)
+        );
+        this.playerHealth -= valuePlayer;
+        this.addNewEvent("Player", "specialAttack", valuePlayer);
+        this.attackMonster(
+          this.randomNumber(this.randomNumber(5, 5), this.randomNumber(7, 8)),
+          this.randomNumber(
+            this.randomNumber(15, 15),
+            this.randomNumber(25, 38)
+          )
+        );
+      }
+    },
+    addNewEvent(entity, method, value) {
+      this.log.push(
+        `Entity what make is ${entity} from ${method} with value: ${value}`
       );
     },
+    newGame() {
+      this.rounds = 4;
+      this.playerHealth = 100;
+      this.monsterHealth = 100;
+      this.life = [
+        { check: true, label: "Life" },
+        { check: true, label: "Life" },
+        { check: true, label: "Life" },
+      ];
+      this.winner = "";
+      this.log = [];
+      this.showLogging = false;
+    },
     addedHeal(index) {
-      if (this.playerHealth < 100 && this.monsterHealth < 100) {
+      if (this.rounds > 0) {
         let fountIndex = this.life.find(
           (element, indexElement) => indexElement === index
         );
         if (fountIndex.check !== false) {
-          fountIndex.label = "Used";
-          fountIndex.check = false;
-          this.playerHealth += 20;
-          this.monsterHealth += 20;
+          let counted = this.randomNumber(
+            this.randomNumber(5, 6),
+            this.randomNumber(5, 20)
+          );
+          if (this.playerHealth + counted >= 100) {
+            this.playerHealth = 100;
+            this.addNewEvent("Player", "addedHeal", "100/no Value");
+          } else {
+            fountIndex.label = "Used";
+            fountIndex.check = false;
+            this.playerHealth += counted;
+            this.addNewEvent("Player", "addedHeal", counted);
+          }
         }
+        this.attackMonster(5, 15);
+      }
+    },
+  },
+  watch: {
+    rounds() {
+      if (this.rounds <= 0) {
+        if (this.playerHealth < this.monsterHealth) {
+          this.winner = "Monster";
+        } else if (this.playerHealth > this.monsterHealth) {
+          this.winner = "Player";
+        } else {
+          this.winner = "Equal";
+        }
+
+        setTimeout(() => {
+          this.newGame();
+        }, 2000);
       }
     },
   },
