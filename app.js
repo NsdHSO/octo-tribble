@@ -191,6 +191,11 @@ Vue.createApp({
       this.log = [];
       this.showLogging = false;
     },
+    surrender() {
+      this.playerHealth = 0;
+      this.winner ='Monster'
+      this.rounds = 0
+    },
     addedHeal(index) {
       if (this.rounds > 0) {
         let fountIndex = this.life.find(
