@@ -80,7 +80,8 @@
               <button @click="surrender" class="btn btn-success">Surrender</button>
             </div>
             <div>
-              <button @click='showLoggings()' class="btn btn-success">Show Logging</button>
+              <button :class="{disabled: log.length <= 0}" @click='showLoggings()' class="btn btn-success">Show
+                Logging</button>
             </div>
           </div>
 

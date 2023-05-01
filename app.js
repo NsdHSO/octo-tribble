@@ -192,9 +192,12 @@ Vue.createApp({
       this.showLogging = false;
     },
     surrender() {
+      this.addNewEvent("Monster", "Surrender", 100);
+      this.showLogging = true;
       this.playerHealth = 0;
       this.winner ='Monster'
       this.rounds = 0
+
     },
     addedHeal(index) {
       if (this.rounds > 0) {
@@ -233,7 +236,7 @@ Vue.createApp({
 
         setTimeout(() => {
           this.newGame();
-        }, 2000);
+        }, 20000);
       }
     },
   },
