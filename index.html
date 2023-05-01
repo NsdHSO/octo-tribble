@@ -12,7 +12,7 @@
 
 <body>
   <div id="app" class="container">
-    <div class="screen">
+    <!-- <div class="screen">
       <div class="alert alert-success" role="alert">
         Vue Corse Goals
       </div>
@@ -25,8 +25,52 @@
           <p v-if="goals.length <= 0">No goals have been added yet</p>
           <ul class="list-group list-group-flush">
             <li v-if="goals.length > 0" class="list-group-item d-flex">Goals</li>
-            <li v-for="(item, index) in goals" :key="index" class="list-group-item">{{item}}</li>
+            <li v-for="(item, index) in goals" :key="item" class="list-group-item">{{item}} <button class="btn btn-secondary m-2 p-2"
+                @click="removeGoal(index)"><i class="bi bi-x-circle-fill"></i></button>
+                <input @click.stop/>
+              </li>
           </ul>
+        </div>
+      </div>
+    </div> -->
+    <div class="continer-game">
+      <div class="alert alert-success" role="alert">
+        Monster Slayer
+      </div>
+      <div class="card" style="width: 18rem;">
+        <div class="card-body">
+          <h5 class="card-title">Monster Health</h5>
+          <div class="progress card-text" role="progressbar" aria-label="Basic example" aria-valuenow="25"
+            aria-valuemin="0" aria-valuemax="100">
+            <div class="progress-bar" :style="{width: monsterHealth+'%'}"></div>
+          </div>
+        </div>
+        <div class="card-body">
+          <h5 class="card-title">Your Health</h5>
+          <div class="progress card-text" role="progressbar" aria-label="Basic example" aria-valuenow="25"
+            aria-valuemin="0" aria-valuemax="100">
+            <div class="progress-bar" :style="{width: playerHealth+'%'}"></div>
+          </div>
+        </div>
+        <div>
+          <div @click="addedHeal(index)" v-for="(item, index) in life" :key="item"
+            :class="['btn', {'btn-danger' : item.check, 'btn-warning' : !item.check}]">
+            {{item.label}}
+          </div>
+        </div>
+        <div class="action d-flex flex-wrap gap-2 p-2">
+          <div>
+            <button class="btn btn-success" @click="playerAttack()">Attack</button>
+          </div>
+          <div>
+            <button class="btn btn-success" @click="specialAttack()">Special Attack</button>
+          </div>
+          <div>
+            <button class="btn btn-success">Heal</button>
+          </div>
+          <div>
+            <button class="btn btn-success">Surrender</button>
+          </div>
         </div>
       </div>
     </div>
