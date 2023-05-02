@@ -34,7 +34,7 @@
       </div>
     </div> -->
 
-    <div class="continer-game d-flex align-items-center flex-column">
+    <div class="continer-game d-flex align-items-center gap-5">
 
       <div v-if="winner !== ''">
         <div class="alert alert-success" role="alert">
@@ -74,21 +74,19 @@
 
         </div>
       </div>
-      <div v-if="showLogging">
-        <ul class="card">
-          <li v-for="(item, index) in log" :key="index">{{item}}</li>
-        </ul>
-      </div>
-      <div v-else>
-        <h6>Logging</h6>
+      <div :style="{'minWidth':'36rem'}">
+        <div v-if="showLogging">
+          <ul class="card">
+            <li v-for="(item, index) in log" :key="index">{{item}}</li>
+          </ul>
+        </div>
+        <div v-else>
+          <h6>Logging</h6>
+        </div>
+    
       </div>
     </div>
-    <div class="vue-behaind">
-      <div class="card" style="width: 18rem;">
 
-        dasdasd
-      </div>
-    </div>
   </div>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe"
