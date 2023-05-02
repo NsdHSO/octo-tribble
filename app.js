@@ -63,6 +63,7 @@ Vue.createApp({
     },
   },
 }).mount(".container-id");
+
 Vue.createApp({
   data() {
     return {
@@ -115,11 +116,19 @@ Vue.createApp({
   },
 }).mount(".screen");
 
-Vue.createApp({
+const games = Vue.createApp({
   data() {
     return {
-      playerHealth: 100,
-      monsterHealth: 100,
+      players: [
+        {
+          name: "Monster",
+          health: 100,
+        },
+        {
+          name: "Player",
+          health: 100,
+        },
+      ],
       showLogging: false,
       life: [
         { check: true, label: "Life" },
@@ -132,6 +141,9 @@ Vue.createApp({
     };
   },
   methods: {
+    findUser(findName) {
+      return this.players.find((palyer) => palyer.name === findName);
+    },
     showLoggings() {
       console.log("ion");
       this.showLogging = !this.showLogging;
@@ -141,7 +153,7 @@ Vue.createApp({
     },
     attackMonster(min, max) {
       let value = this.randomNumber(min, max);
-      this.monsterHealth -= value;
+      this.findUser("Monster").health -= value;
       this.addNewEvent("Monster", "attackMonster", value);
       this.rounds--;
     },
@@ -151,9 +163,12 @@ Vue.createApp({
           this.randomNumber(5, 5),
           this.randomNumber(5, 18)
         );
-        this.playerHealth -= value;
+        this.findUser("Player").health -= value;
         this.addNewEvent("Player", "playerAttack", value);
-        this.rounds--;
+        this.attackMonster(
+          this.randomNumber(this.randomNumber(5, 5), this.randomNumber(7, 8)),
+          this.randomNumber(this.randomNumber(8, 15), this.randomNumber(15, 18))
+        );
       }
     },
     specialAttack() {
@@ -162,13 +177,13 @@ Vue.createApp({
           this.randomNumber(5, 5),
           this.randomNumber(15, 28)
         );
-        this.playerHealth -= valuePlayer;
+        this.findUser("Player").health -= valuePlayer;
         this.addNewEvent("Player", "specialAttack", valuePlayer);
         this.attackMonster(
           this.randomNumber(this.randomNumber(5, 5), this.randomNumber(7, 8)),
           this.randomNumber(
             this.randomNumber(15, 15),
-            this.randomNumber(25, 38)
+            this.randomNumber(15, 38)
           )
         );
       }
@@ -180,8 +195,8 @@ Vue.createApp({
     },
     newGame() {
       this.rounds = 4;
-      this.playerHealth = 100;
-      this.monsterHealth = 100;
+      this.findUser("Player").health = 100;
+      this.findUser("Monster").health = 100;
       this.life = [
         { check: true, label: "Life" },
         { check: true, label: "Life" },
@@ -194,7 +209,7 @@ Vue.createApp({
     surrender() {
       this.addNewEvent("Monster", "Surrender", 100);
       this.showLogging = true;
-      this.playerHealth = 0;
+      this.findUser("Player").health = 0;
       this.winner = "Monster";
       this.rounds = 0;
     },
@@ -208,26 +223,30 @@ Vue.createApp({
             this.randomNumber(5, 6),
             this.randomNumber(5, 20)
           );
-          if (this.playerHealth + counted >= 100) {
-            this.playerHealth = 100;
+          if (this.findUser("Player").health + counted >= 100) {
+            this.findUser("Player").health = 100;
             this.addNewEvent("Player", "addedHeal", "100/no Value");
           } else {
             fountIndex.label = "Used";
             fountIndex.check = false;
-            this.playerHealth += counted;
+            this.findUser("Player").health += counted;
             this.addNewEvent("Player", "addedHeal", counted);
           }
+          fountIndex.label = "Used";
+          fountIndex.check = false;
+          this.rounds--;
         }
-        this.attackMonster(5, 15);
       }
     },
   },
   watch: {
     rounds() {
       if (this.rounds <= 0) {
-        if (this.playerHealth < this.monsterHealth) {
+        if (this.findUser("Player").health < this.findUser("Monster").health) {
           this.winner = "Monster";
-        } else if (this.playerHealth > this.monsterHealth) {
+        } else if (
+          this.findUser("Player").health > this.findUser("Monster").health
+        ) {
           this.winner = "Player";
         } else {
           this.winner = "Equal";
@@ -239,6 +258,27 @@ Vue.createApp({
       }
     },
   },
-}).mount(".continer-game");
+});
 
-Vue.createApp({}).mount(".vue-behaind");
+games.component("show-clock", {
+  props: ["players"],
+  template: `
+  <div class="card-body" v-for="(item, index) in players" :key="item">
+    <h5 class="card-title">{{item.name}} Health</h5>
+    <div class="progress card-text" role="progressbar" aria-label="Basic example" aria-valuenow="25"
+          aria-valuemin="0" aria-valuemax="100">
+      <div class="progress-bar" :style="{width: item.health+'%'}"></div>
+    </div>
+  </div>
+  `,
+});
+
+games.component("show-round", {
+  props:['rounds'],
+  template: `
+    <div class="card-body d-flex justify-content-center">
+    <h3 class="card-title">Round {{rounds}}</h5>
+  </div>`,
+});
+games.mount(".continer-game");
+const app = Vue.createApp({}).mount(".vue-behaind");
