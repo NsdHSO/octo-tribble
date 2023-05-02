@@ -135,7 +135,7 @@ const games = Vue.createApp({
         { check: true, label: "Life" },
         { check: true, label: "Life" },
       ],
-      rounds: 4,
+      rounds: 6,
       winner: "",
       log: [],
     };
@@ -194,7 +194,7 @@ const games = Vue.createApp({
       );
     },
     newGame() {
-      this.rounds = 4;
+      this.rounds = 6;
       this.findUser("Player").health = 100;
       this.findUser("Monster").health = 100;
       this.life = [
@@ -230,7 +230,7 @@ const games = Vue.createApp({
             fountIndex.label = "Used";
             fountIndex.check = false;
             this.findUser("Player").health += counted;
-            this.addNewEvent("Player", "addedHeal", counted);
+            this.addNewEvent("Player", "addedHeal", `+ ${counted}`);
           }
           fountIndex.label = "Used";
           fountIndex.check = false;
@@ -251,10 +251,11 @@ const games = Vue.createApp({
         } else {
           this.winner = "Equal";
         }
+        this.showLogging = true
 
         setTimeout(() => {
           this.newGame();
-        }, 2000);
+        }, 4000);
       }
     },
   },
